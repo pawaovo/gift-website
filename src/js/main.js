@@ -27,24 +27,13 @@ class BirthdayApp {
         });
       }
 
-      // 检查URL参数
-      this.checkURLParams();
+      // 检查是否需要显示主题选择器
+      const shouldInitializeApp = this.checkThemeSelection();
 
-      // 初始化组件
-      await this.initializeComponents();
-
-      // 绑定组件间的交互
-      this.bindComponentInteractions();
-
-      // 设置全局事件监听
-      this.setupGlobalEvents();
-
-      // 应用初始主题
-      this.applyInitialTheme();
-
-      // 主动触发一次主题切换到当前主题，复用主题切换的自动播放逻辑
-      console.log('🚀 开始触发初始自动播放...');
-      await this.triggerInitialAutoPlay();
+      if (shouldInitializeApp) {
+        // 如果已经选择过主题，正常初始化主应用
+        await this.initializeMainApp();
+      }
 
       this.isInitialized = true;
       console.log('🎉 生日礼物网页初始化完成！');
@@ -455,6 +444,27 @@ class BirthdayApp {
   }
 
   /**
+   * 初始化主应用
+   */
+  async initializeMainApp() {
+    console.log('🚀 初始化主应用...');
+
+    // 初始化组件
+    await this.initializeComponents();
+
+    // 绑定组件间的交互
+    this.bindComponentInteractions();
+
+    // 设置全局事件监听
+    this.setupGlobalEvents();
+
+    // 应用初始主题
+    this.applyInitialTheme();
+
+    console.log('✅ 主应用初始化完成');
+  }
+
+  /**
    * 应用初始主题
    */
   applyInitialTheme() {
@@ -465,41 +475,97 @@ class BirthdayApp {
   }
 
   /**
-   * 检查URL参数并处理主题选择
+   * 检查是否需要显示主题选择器
    */
-  checkURLParams() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const themeParam = urlParams.get('theme');
+  checkThemeSelection() {
+    // 检查是否已经选择过主题
+    const hasSelectedTheme = localStorage.getItem('selectedTheme');
 
-    if (themeParam !== null) {
-      const themeIndex = parseInt(themeParam);
-      if (themeIndex >= 0 && themeIndex < 3) {
-        console.log('🎯 检测到主题参数:', themeIndex);
-        // 设置初始主题
-        this.themeSwitcher.currentThemeIndex = themeIndex;
-        // 标记为来自选择页面，需要自动播放
-        this.shouldAutoPlay = true;
-        return true;
-      }
+    if (!hasSelectedTheme) {
+      // 显示主题选择器
+      this.showThemeSelector();
+      return false;
+    } else {
+      // 隐藏选择器，显示主应用
+      this.hideThemeSelector();
+      return true;
     }
+  }
 
-    this.shouldAutoPlay = false;
-    return false;
+  /**
+   * 显示主题选择器
+   */
+  showThemeSelector() {
+    console.log('🎨 显示主题选择器');
+
+    const overlay = document.getElementById('themeSelectorOverlay');
+    const mainContent = document.getElementById('mainContent');
+    const mainHeader = document.getElementById('mainHeader');
+    const mainFooter = document.getElementById('mainFooter');
+
+    if (overlay) overlay.style.display = 'flex';
+    if (mainContent) mainContent.style.display = 'none';
+    if (mainHeader) mainHeader.style.display = 'none';
+    if (mainFooter) mainFooter.style.display = 'none';
+
+    // 绑定选择器按钮事件
+    this.bindSelectorEvents();
+  }
+
+  /**
+   * 隐藏主题选择器
+   */
+  hideThemeSelector() {
+    console.log('🎵 隐藏主题选择器，显示主应用');
+
+    const overlay = document.getElementById('themeSelectorOverlay');
+    const mainContent = document.getElementById('mainContent');
+    const mainHeader = document.getElementById('mainHeader');
+    const mainFooter = document.getElementById('mainFooter');
+
+    if (overlay) overlay.style.display = 'none';
+    if (mainContent) mainContent.style.display = 'block';
+    if (mainHeader) mainHeader.style.display = 'block';
+    if (mainFooter) mainFooter.style.display = 'block';
+  }
+
+  /**
+   * 绑定选择器按钮事件
+   */
+  bindSelectorEvents() {
+    const selectorButtons = document.querySelectorAll('.selector-btn');
+
+    selectorButtons.forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const themeIndex = parseInt(e.target.dataset.theme);
+        console.log('🎯 用户选择主题:', themeIndex);
+
+        // 保存选择到localStorage
+        localStorage.setItem('selectedTheme', themeIndex.toString());
+
+        // 设置主题
+        this.themeSwitcher.currentThemeIndex = themeIndex;
+
+        // 隐藏选择器，显示主应用
+        this.hideThemeSelector();
+
+        // 重新初始化主应用
+        await this.initializeMainApp();
+
+        // 自动播放音乐
+        this.shouldAutoPlay = true;
+        await this.triggerInitialAutoPlay();
+      });
+    });
   }
 
   /**
    * 触发初始自动播放
-   * 通过模拟点击播放按钮来直接触发音乐播放
+   * 用户选择主题后自动播放音乐
    */
   async triggerInitialAutoPlay() {
     try {
-      console.log('🎵 触发初始自动播放...');
-
-      // 检查是否应该自动播放
-      if (!this.shouldAutoPlay) {
-        console.log('🚫 非主题选择页面进入，跳过自动播放');
-        return;
-      }
+      console.log('🎵 触发主题选择后自动播放...');
 
       // 等待一小段时间确保所有组件初始化完成
       await new Promise(resolve => setTimeout(resolve, 500));
@@ -534,13 +600,9 @@ class BirthdayApp {
       console.log('❌ 自动播放失败:', error.message);
       console.error('错误详情:', error);
 
-      // 处理自动播放限制
-      if (error.name === 'NotAllowedError') {
-        console.log('🚫 浏览器阻止了自动播放，设置用户交互后播放');
-        this.setupAutoPlayOnInteraction();
-      } else {
-        console.error('💥 播放失败:', error);
-      }
+      // 主题选择后的播放失败通常不会发生，因为有用户交互
+      console.log('🔄 尝试设置用户交互后播放作为备用方案');
+      this.setupAutoPlayOnInteraction();
     }
   }
 

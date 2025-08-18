@@ -29,21 +29,29 @@
 </head>
 <body>
     <!-- 主题切换按钮 -->
-    <header class="header">
-        <div class="header-content">
-            <a href="/theme-selector.html" class="back-btn" title="返回主题选择">
-                <span class="back-icon">←</span>
-            </a>
-            <div class="theme-buttons">
-                <button class="theme-btn active" data-theme="0" aria-label="切换到失乐园">失乐园</button>
-                <button class="theme-btn" data-theme="1" aria-label="切换到鸟人">鸟人</button>
-                <button class="theme-btn" data-theme="2" aria-label="切换到Leo">Leo</button>
-            </div>
+    <header class="header" id="mainHeader" style="display: none;">
+        <div class="theme-buttons">
+            <button class="theme-btn active" data-theme="0" aria-label="切换到失乐园">失乐园</button>
+            <button class="theme-btn" data-theme="1" aria-label="切换到鸟人">鸟人</button>
+            <button class="theme-btn" data-theme="2" aria-label="切换到Leo">Leo</button>
         </div>
     </header>
 
+    <!-- 主题选择覆盖层 -->
+    <div class="theme-selector-overlay" id="themeSelectorOverlay">
+        <div class="selector-container">
+            <h1 class="selector-title">生日礼物</h1>
+            <p class="selector-subtitle">选择一个主题开始你的音乐之旅</p>
+            <div class="selector-buttons">
+                <button class="selector-btn" data-theme="0">失乐园</button>
+                <button class="selector-btn" data-theme="1">鸟人</button>
+                <button class="selector-btn" data-theme="2">Leo</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 主内容区域 -->
-    <main class="main">
+    <main class="main" id="mainContent" style="display: none;">
         <div class="background-container">
             <img class="background-image" src="/images/bg1.png" alt="背景图片" />
         </div>
@@ -53,7 +61,7 @@
     </main>
 
     <!-- 音频播放器 -->
-    <footer class="footer">
+    <footer class="footer" id="mainFooter" style="display: none;">
         <div class="audio-player">
             <!-- 唱片区域：左侧 -->
             <div class="vinyl-section">
