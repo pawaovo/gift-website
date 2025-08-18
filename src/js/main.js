@@ -27,6 +27,9 @@ class BirthdayApp {
         });
       }
 
+      // 检查URL参数
+      this.checkURLParams();
+
       // 初始化组件
       await this.initializeComponents();
 
@@ -462,6 +465,29 @@ class BirthdayApp {
   }
 
   /**
+   * 检查URL参数并处理主题选择
+   */
+  checkURLParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const themeParam = urlParams.get('theme');
+
+    if (themeParam !== null) {
+      const themeIndex = parseInt(themeParam);
+      if (themeIndex >= 0 && themeIndex < 3) {
+        console.log('🎯 检测到主题参数:', themeIndex);
+        // 设置初始主题
+        this.themeSwitcher.currentThemeIndex = themeIndex;
+        // 标记为来自选择页面，需要自动播放
+        this.shouldAutoPlay = true;
+        return true;
+      }
+    }
+
+    this.shouldAutoPlay = false;
+    return false;
+  }
+
+  /**
    * 触发初始自动播放
    * 通过模拟点击播放按钮来直接触发音乐播放
    */
@@ -469,8 +495,14 @@ class BirthdayApp {
     try {
       console.log('🎵 触发初始自动播放...');
 
+      // 检查是否应该自动播放
+      if (!this.shouldAutoPlay) {
+        console.log('🚫 非主题选择页面进入，跳过自动播放');
+        return;
+      }
+
       // 等待一小段时间确保所有组件初始化完成
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       // 详细检查音频播放器状态
       console.log('🔍 检查音频播放器状态:', {
@@ -491,15 +523,15 @@ class BirthdayApp {
         return;
       }
 
-      console.log('▶️ 模拟点击播放按钮，直接触发音乐播放');
+      console.log('▶️ 用户已选择主题，直接触发音乐播放');
 
       // 直接调用音频播放器的播放方法
       await this.audioPlayer.play();
 
-      console.log('✅ 模拟播放按钮点击完成，音乐开始播放');
+      console.log('✅ 主题选择后自动播放成功！');
 
     } catch (error) {
-      console.log('❌ 模拟播放按钮点击失败:', error.message);
+      console.log('❌ 自动播放失败:', error.message);
       console.error('错误详情:', error);
 
       // 处理自动播放限制

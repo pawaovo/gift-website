@@ -7,7 +7,7 @@
 export const THEMES = [
   {
     id: 0,
-    name: '主题一',
+    name: '失乐园',
     title: '생일 축하해요!',
     description: '들국화 - 걱정말아요 그대',
     background: '/images/bg1.png',
@@ -22,7 +22,7 @@ export const THEMES = [
   },
   {
     id: 1,
-    name: '主题二',
+    name: '鸟人',
     title: 'Happy Birthday!',
     description: 'Bon Iver - For Emma',
     background: '/images/bg2.png',
@@ -37,7 +37,7 @@ export const THEMES = [
   },
   {
     id: 2,
-    name: '主题三',
+    name: 'Leo',
     title: '生日快樂！',
     description: '楊千嬅 - 勇',
     background: '/images/bg3.png',
