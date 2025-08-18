@@ -32,133 +32,6 @@ body {
   backdrop-filter: blur(10px);
 }
 
-.header-content {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.back-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  color: white;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.back-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateX(-2px);
-}
-
-/* ===== 主题选择器覆盖层 ===== */
-.theme-selector-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-}
-
-.selector-container {
-  text-align: center;
-  padding: 2rem;
-  max-width: 800px;
-  width: 100%;
-}
-
-.selector-title {
-  font-size: 3rem;
-  font-weight: 300;
-  color: white;
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  animation: fadeInUp 1s ease-out 0.5s forwards;
-}
-
-.selector-subtitle {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 3rem;
-  opacity: 0;
-  animation: fadeInUp 1s ease-out 0.8s forwards;
-}
-
-.selector-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.selector-btn {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  padding: 2rem 3rem;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 180px;
-  opacity: 0;
-  transform: translateY(30px);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.selector-btn:nth-child(1) {
-  animation: fadeInUp 1s ease-out 1.1s forwards;
-}
-
-.selector-btn:nth-child(2) {
-  animation: fadeInUp 1s ease-out 1.3s forwards;
-}
-
-.selector-btn:nth-child(3) {
-  animation: fadeInUp 1s ease-out 1.5s forwards;
-}
-
-.selector-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.selector-btn:active {
-  transform: translateY(-2px);
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .theme-buttons {
   display: flex;
   justify-content: center;
@@ -524,9 +397,10 @@ body {
   }
 
   .theme-btn {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-    min-width: 80px;
+    padding: 0.8rem 1.6rem;
+    font-size: 0.95rem;
+    min-width: 100px;
+    white-space: nowrap; /* 防止文字换行 */
   }
 
   .content-overlay {
@@ -547,11 +421,12 @@ body {
   }
 
   .theme-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-    min-width: 70px;
+    padding: 0.7rem 1.4rem;
+    font-size: 0.9rem;
+    min-width: 90px;
     flex: 1;
-    max-width: 120px;
+    max-width: 140px;
+    white-space: nowrap; /* 防止文字换行 */
   }
 
   .content-overlay {
@@ -761,45 +636,6 @@ body {
   .background-image {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
-  }
-}
-
-/* 主题选择器移动端适配 */
-@media (max-width: 768px) {
-  .selector-title {
-    font-size: 2.5rem;
-  }
-
-  .selector-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  .selector-btn {
-    padding: 1.5rem 2.5rem;
-    font-size: 1.3rem;
-    min-width: 200px;
-  }
-
-  .selector-container {
-    padding: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .selector-title {
-    font-size: 2rem;
-  }
-
-  .selector-subtitle {
-    font-size: 1rem;
-  }
-
-  .selector-btn {
-    padding: 1.2rem 2rem;
-    font-size: 1.2rem;
-    min-width: 160px;
   }
 }
 

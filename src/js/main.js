@@ -27,16 +27,20 @@ class BirthdayApp {
         });
       }
 
-      // 检查是否需要显示主题选择器
-      const shouldInitializeApp = this.checkThemeSelection();
+      // 初始化组件
+      await this.initializeComponents();
 
-      if (shouldInitializeApp) {
-        // 如果已经选择过主题，正常初始化主应用
-        await this.initializeMainApp();
-      }
+      // 绑定组件间的交互
+      this.bindComponentInteractions();
+
+      // 设置全局事件监听
+      this.setupGlobalEvents();
+
+      // 应用初始主题
+      this.applyInitialTheme();
 
       this.isInitialized = true;
-      console.log('🎉 生日礼物网页初始化完成！');
+      console.log('生日礼物网页初始化完成！');
 
     } catch (error) {
       console.error('应用初始化失败:', error);
@@ -96,10 +100,6 @@ class BirthdayApp {
     try {
       // 更新页面标题
       this.updatePageTitle(theme);
-
-      // 主题切换后自动播放新主题的音乐
-      console.log('主题切换完成，尝试自动播放新主题音乐');
-      await this.attemptAutoPlayAfterThemeChange();
 
       // 触发主题切换完成事件
       this.onThemeChangeComplete(theme);
@@ -444,27 +444,6 @@ class BirthdayApp {
   }
 
   /**
-   * 初始化主应用
-   */
-  async initializeMainApp() {
-    console.log('🚀 初始化主应用...');
-
-    // 初始化组件
-    await this.initializeComponents();
-
-    // 绑定组件间的交互
-    this.bindComponentInteractions();
-
-    // 设置全局事件监听
-    this.setupGlobalEvents();
-
-    // 应用初始主题
-    this.applyInitialTheme();
-
-    console.log('✅ 主应用初始化完成');
-  }
-
-  /**
    * 应用初始主题
    */
   applyInitialTheme() {
@@ -472,291 +451,6 @@ class BirthdayApp {
 
     // 更新页面标题
     this.updatePageTitle(currentTheme);
-  }
-
-  /**
-   * 检查是否需要显示主题选择器
-   */
-  checkThemeSelection() {
-    // 检查是否已经选择过主题
-    const hasSelectedTheme = localStorage.getItem('selectedTheme');
-
-    if (!hasSelectedTheme) {
-      // 显示主题选择器
-      this.showThemeSelector();
-      return false;
-    } else {
-      // 隐藏选择器，显示主应用
-      this.hideThemeSelector();
-      return true;
-    }
-  }
-
-  /**
-   * 显示主题选择器
-   */
-  showThemeSelector() {
-    console.log('🎨 显示主题选择器');
-
-    const overlay = document.getElementById('themeSelectorOverlay');
-    const mainContent = document.getElementById('mainContent');
-    const mainHeader = document.getElementById('mainHeader');
-    const mainFooter = document.getElementById('mainFooter');
-
-    if (overlay) overlay.style.display = 'flex';
-    if (mainContent) mainContent.style.display = 'none';
-    if (mainHeader) mainHeader.style.display = 'none';
-    if (mainFooter) mainFooter.style.display = 'none';
-
-    // 绑定选择器按钮事件
-    this.bindSelectorEvents();
-  }
-
-  /**
-   * 隐藏主题选择器
-   */
-  hideThemeSelector() {
-    console.log('🎵 隐藏主题选择器，显示主应用');
-
-    const overlay = document.getElementById('themeSelectorOverlay');
-    const mainContent = document.getElementById('mainContent');
-    const mainHeader = document.getElementById('mainHeader');
-    const mainFooter = document.getElementById('mainFooter');
-
-    if (overlay) overlay.style.display = 'none';
-    if (mainContent) mainContent.style.display = 'block';
-    if (mainHeader) mainHeader.style.display = 'block';
-    if (mainFooter) mainFooter.style.display = 'block';
-  }
-
-  /**
-   * 绑定选择器按钮事件
-   */
-  bindSelectorEvents() {
-    const selectorButtons = document.querySelectorAll('.selector-btn');
-
-    selectorButtons.forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        const themeIndex = parseInt(e.target.dataset.theme);
-        console.log('🎯 用户选择主题:', themeIndex);
-
-        // 保存选择到localStorage
-        localStorage.setItem('selectedTheme', themeIndex.toString());
-
-        // 设置主题
-        this.themeSwitcher.currentThemeIndex = themeIndex;
-
-        // 隐藏选择器，显示主应用
-        this.hideThemeSelector();
-
-        // 重新初始化主应用
-        await this.initializeMainApp();
-
-        // 自动播放音乐
-        this.shouldAutoPlay = true;
-        await this.triggerInitialAutoPlay();
-      });
-    });
-  }
-
-  /**
-   * 触发初始自动播放
-   * 用户选择主题后自动播放音乐
-   */
-  async triggerInitialAutoPlay() {
-    try {
-      console.log('🎵 触发主题选择后自动播放...');
-
-      // 等待一小段时间确保所有组件初始化完成
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // 详细检查音频播放器状态
-      console.log('🔍 检查音频播放器状态:', {
-        hasAudioPlayer: !!this.audioPlayer,
-        hasAudio: !!(this.audioPlayer && this.audioPlayer.audio),
-        currentTrack: this.audioPlayer ? this.audioPlayer.currentTrack : 'no player',
-        audioSrc: this.audioPlayer && this.audioPlayer.audio ? this.audioPlayer.audio.src : 'no src',
-        isPlaying: this.audioPlayer ? this.audioPlayer.isCurrentlyPlaying() : false
-      });
-
-      if (!this.audioPlayer || !this.audioPlayer.audio) {
-        console.warn('❌ 音频播放器未初始化，无法自动播放');
-        return;
-      }
-
-      if (!this.audioPlayer.currentTrack) {
-        console.warn('❌ 没有当前音轨，无法播放');
-        return;
-      }
-
-      console.log('▶️ 用户已选择主题，直接触发音乐播放');
-
-      // 直接调用音频播放器的播放方法
-      await this.audioPlayer.play();
-
-      console.log('✅ 主题选择后自动播放成功！');
-
-    } catch (error) {
-      console.log('❌ 自动播放失败:', error.message);
-      console.error('错误详情:', error);
-
-      // 主题选择后的播放失败通常不会发生，因为有用户交互
-      console.log('🔄 尝试设置用户交互后播放作为备用方案');
-      this.setupAutoPlayOnInteraction();
-    }
-  }
-
-  /**
-   * 尝试自动播放音乐
-   */
-  async attemptAutoPlay() {
-    try {
-      console.log('尝试自动播放音乐...');
-
-      // 等待音频播放器完全初始化
-      if (!this.audioPlayer || !this.audioPlayer.audio) {
-        console.warn('音频播放器未初始化，跳过自动播放');
-        return;
-      }
-
-      // 等待一段时间确保ThemeSwitcher已经加载了音轨
-      console.log('等待音轨加载完成...');
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      console.log('音频播放器状态:', {
-        hasAudio: !!this.audioPlayer.audio,
-        currentTrack: this.audioPlayer.currentTrack,
-        isPlaying: this.audioPlayer.isCurrentlyPlaying(),
-        audioSrc: this.audioPlayer.audio ? this.audioPlayer.audio.src : 'no src'
-      });
-
-      // 检查是否有当前音轨
-      if (!this.audioPlayer.currentTrack) {
-        console.warn('音轨未加载，尝试手动加载默认主题音乐');
-
-        // 如果没有音轨，加载默认主题的音乐
-        const currentTheme = this.themeSwitcher.getCurrentTheme();
-        console.log('当前主题:', currentTheme);
-
-        if (currentTheme && currentTheme.music) {
-          console.log('手动加载默认主题音乐:', currentTheme.music);
-          await this.audioPlayer.changeTrack(
-            currentTheme.music,
-            currentTheme.album,
-            currentTheme.lyrics
-          );
-
-          // 等待音轨加载
-          await new Promise(resolve => setTimeout(resolve, 800));
-        } else {
-          console.warn('没有找到默认主题或音乐文件');
-          return;
-        }
-      }
-
-      console.log('准备播放音乐，当前音轨:', this.audioPlayer.currentTrack);
-
-      // 尝试播放音乐
-      await this.audioPlayer.play();
-      console.log('自动播放成功！');
-
-    } catch (error) {
-      console.log('自动播放失败:', error.message);
-
-      // 处理不同类型的自动播放限制
-      if (error.name === 'NotAllowedError') {
-        console.log('浏览器阻止了自动播放，需要用户交互');
-        this.setupAutoPlayOnInteraction();
-      } else if (error.name === 'AbortError') {
-        console.log('音频加载被中断');
-      } else {
-        console.error('自动播放出现未知错误:', error);
-      }
-    }
-  }
-
-  /**
-   * 主题切换后尝试自动播放
-   */
-  async attemptAutoPlayAfterThemeChange() {
-    try {
-      // 等待一小段时间确保音轨已切换
-      await new Promise(resolve => setTimeout(resolve, 300));
-
-      // 检查音频播放器状态
-      if (!this.audioPlayer || !this.audioPlayer.audio) {
-        console.warn('音频播放器未初始化');
-        return;
-      }
-
-      console.log('主题切换后音频状态:', {
-        hasAudio: !!this.audioPlayer.audio,
-        currentTrack: this.audioPlayer.currentTrack,
-        isPlaying: this.audioPlayer.isCurrentlyPlaying()
-      });
-
-      // 如果当前没有播放，尝试播放
-      if (!this.audioPlayer.isCurrentlyPlaying()) {
-        await this.audioPlayer.play();
-        console.log('主题切换后自动播放成功！');
-      }
-
-    } catch (error) {
-      console.log('主题切换后自动播放失败:', error.message);
-
-      // 如果是初始页面加载触发的，需要设置用户交互后播放
-      if (error.name === 'NotAllowedError') {
-        console.log('自动播放被阻止，设置用户交互后播放');
-        this.setupAutoPlayOnInteraction();
-      }
-    }
-  }
-
-  /**
-   * 设置用户交互后自动播放
-   */
-  setupAutoPlayOnInteraction() {
-    const playOnInteraction = async (event) => {
-      try {
-        console.log('👆 用户交互触发，尝试播放音乐，事件类型:', event.type);
-
-        // 检查音轨状态
-        if (!this.audioPlayer.currentTrack) {
-          console.log('🔄 用户交互时音轨未加载，尝试加载');
-          const currentTheme = this.themeSwitcher.getCurrentTheme();
-          if (currentTheme && currentTheme.music) {
-            await this.audioPlayer.changeTrack(
-              currentTheme.music,
-              currentTheme.album,
-              currentTheme.lyrics
-            );
-            await new Promise(resolve => setTimeout(resolve, 300));
-          }
-        }
-
-        console.log('🎵 开始播放音乐...');
-        await this.audioPlayer.play();
-        console.log('✅ 用户交互后自动播放成功！');
-
-        // 移除事件监听器，避免重复触发
-        document.removeEventListener('click', playOnInteraction);
-        document.removeEventListener('touchstart', playOnInteraction);
-        document.removeEventListener('keydown', playOnInteraction);
-
-        console.log('🧹 已移除用户交互监听器');
-
-      } catch (error) {
-        console.log('❌ 用户交互后播放仍然失败:', error.message);
-        console.error('错误详情:', error);
-      }
-    };
-
-    // 监听各种用户交互事件
-    document.addEventListener('click', playOnInteraction, { once: true, passive: true });
-    document.addEventListener('touchstart', playOnInteraction, { once: true, passive: true });
-    document.addEventListener('keydown', playOnInteraction, { once: true, passive: true });
-
-    console.log('👂 已设置用户交互后自动播放监听器');
   }
 
   /**
