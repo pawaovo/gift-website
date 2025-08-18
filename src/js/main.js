@@ -39,8 +39,8 @@ class BirthdayApp {
       // 应用初始主题
       this.applyInitialTheme();
 
-      // 尝试自动播放音乐
-      await this.attemptAutoPlay();
+      // 主动触发一次主题切换到当前主题，复用主题切换的自动播放逻辑
+      await this.triggerInitialAutoPlay();
 
       this.isInitialized = true;
       console.log('生日礼物网页初始化完成！');
@@ -458,6 +458,35 @@ class BirthdayApp {
 
     // 更新页面标题
     this.updatePageTitle(currentTheme);
+  }
+
+  /**
+   * 触发初始自动播放
+   * 通过主动触发主题切换来复用已有的自动播放逻辑
+   */
+  async triggerInitialAutoPlay() {
+    try {
+      console.log('触发初始自动播放...');
+
+      // 等待一小段时间确保所有组件初始化完成
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // 获取当前主题索引
+      const currentThemeIndex = this.themeSwitcher.currentThemeIndex;
+      console.log('当前主题索引:', currentThemeIndex);
+
+      // 主动触发主题切换到当前主题，这会触发handleThemeChange中的自动播放逻辑
+      // 但是要避免重复切换，所以我们直接调用自动播放逻辑
+      console.log('直接触发主题切换后的自动播放逻辑');
+      await this.attemptAutoPlayAfterThemeChange();
+
+    } catch (error) {
+      console.error('初始自动播放触发失败:', error);
+
+      // 如果失败，回退到原来的自动播放逻辑
+      console.log('回退到原始自动播放逻辑');
+      await this.attemptAutoPlay();
+    }
   }
 
   /**
