@@ -98,14 +98,52 @@ class BirthdayApp {
     const { theme, index } = data;
 
     try {
+      console.log('主题切换完成，尝试自动播放新主题音乐');
+
       // 更新页面标题
       this.updatePageTitle(theme);
+
+      // 切换音频到新主题
+      if (this.audioPlayer && theme.music) {
+        await this.audioPlayer.changeTrack(
+          theme.music,
+          theme.album,
+          theme.lyrics
+        );
+
+        // 尝试自动播放新主题音乐
+        await this.attemptAutoPlayAfterThemeChange();
+      }
 
       // 触发主题切换完成事件
       this.onThemeChangeComplete(theme);
 
     } catch (error) {
       console.error('主题切换处理失败:', error);
+    }
+  }
+
+  /**
+   * 主题切换后尝试自动播放
+   */
+  async attemptAutoPlayAfterThemeChange() {
+    try {
+      console.log('尝试主题切换后自动播放');
+
+      // 等待一小段时间确保音频加载完成
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      // 尝试播放
+      await this.audioPlayer.play();
+      console.log('主题切换后自动播放成功！');
+
+    } catch (error) {
+      if (error.name === 'NotAllowedError') {
+        console.log('自动播放被阻止，设置用户交互后播放');
+        this.setupAutoPlayOnInteraction();
+      } else {
+        console.log('主题切换后播放失败:', error.message);
+      }
     }
   }
 
