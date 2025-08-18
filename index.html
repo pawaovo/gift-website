@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>生日快乐 🎂</title>
+    <meta name="description" content="特别的生日礼物网页" />
+
+    <!-- 移动端优化 -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="生日快乐" />
+    <meta name="theme-color" content="#ff69b4" />
+
+    <!-- PWA支持 -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/images/icon-192.png" />
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="/images/bg1.png" as="image" />
+    <link rel="preload" href="/images/vinyl-record.svg" as="image" />
+    <link rel="preload" href="/audio/theme1.mp3" as="audio" />
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <link rel="stylesheet" href="/src/styles/themes.css" />
+    <link rel="stylesheet" href="/src/styles/animations.css" />
+</head>
+<body>
+    <!-- 主题切换按钮 -->
+    <header class="header">
+        <div class="theme-buttons">
+            <button class="theme-btn active" data-theme="0" aria-label="切换到主题一">主题一</button>
+            <button class="theme-btn" data-theme="1" aria-label="切换到主题二">主题二</button>
+            <button class="theme-btn" data-theme="2" aria-label="切换到主题三">主题三</button>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main">
+        <div class="background-container">
+            <img class="background-image" src="/images/bg1.png" alt="背景图片" />
+        </div>
+        <div class="content-overlay">
+            <h1 class="blessing-text">生日快乐！</h1>
+        </div>
+    </main>
+
+    <!-- 音频播放器 -->
+    <footer class="footer">
+        <div class="audio-player">
+            <!-- 唱片区域：左侧 -->
+            <div class="vinyl-section">
+                <div class="vinyl-container">
+                    <div class="vinyl-record">
+                        <img src="/images/vinyl-record.svg" alt="唱片" class="vinyl-image" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- 播放控制按钮：中间 -->
+            <div class="control-section">
+                <button class="play-control-btn" id="playControlBtn" aria-label="播放/暂停音乐">
+                    <span class="play-icon" id="playIcon">▶</span>
+                    <span class="pause-icon" id="pauseIcon" style="display: none;">⏸</span>
+                </button>
+            </div>
+
+            <!-- 进度条区域：右侧，包含歌词、进度条、时间 -->
+            <div class="progress-section">
+                <div class="current-lyric" id="currentLyric">♪ 音乐播放中...</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                <div class="time-display" id="timeDisplay">00:00 / 00:00</div>
+            </div>
+        </div>
+
+        <!-- 隐藏的音频元素 -->
+        <audio id="audioPlayer" preload="metadata">
+            <!-- 音频文件将通过JavaScript动态加载 -->
+            您的浏览器不支持音频播放。
+        </audio>
+    </footer>
+
+    <!-- JavaScript模块 -->
+    <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

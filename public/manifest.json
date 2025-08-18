@@ -1,0 +1,101 @@
+{
+  "name": "生日快乐礼物网页",
+  "short_name": "生日快乐",
+  "description": "一个特别的生日礼物网页，包含主题切换和音乐播放功能",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ff69b4",
+  "orientation": "any",
+  "scope": "/",
+  "lang": "zh-CN",
+  "categories": ["entertainment", "lifestyle"],
+  "icons": [
+    {
+      "src": "/images/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "主题一",
+      "short_name": "主题一",
+      "description": "切换到主题一：生日快乐",
+      "url": "/?theme=0",
+      "icons": [
+        {
+          "src": "/images/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "主题二", 
+      "short_name": "主题二",
+      "description": "切换到主题二：感谢陪伴",
+      "url": "/?theme=1",
+      "icons": [
+        {
+          "src": "/images/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "主题三",
+      "short_name": "主题三", 
+      "description": "切换到主题三：愿你幸福",
+      "url": "/?theme=2",
+      "icons": [
+        {
+          "src": "/images/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

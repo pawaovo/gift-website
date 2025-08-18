@@ -1,0 +1,337 @@
+/* ===== CSS自定义属性（主题变量） ===== */
+:root {
+  /* 主题1：生日快乐 - 温暖粉色系 */
+  --theme-1-primary: rgba(255, 182, 193, 0.8);
+  --theme-1-secondary: rgba(255, 105, 180, 0.6);
+  --theme-1-accent: rgba(255, 20, 147, 0.9);
+  --theme-1-text: #ffffff;
+  --theme-1-shadow: rgba(255, 20, 147, 0.3);
+
+  /* 主题2：感谢陪伴 - 优雅蓝色系 */
+  --theme-2-primary: rgba(135, 206, 250, 0.8);
+  --theme-2-secondary: rgba(70, 130, 180, 0.6);
+  --theme-2-accent: rgba(30, 144, 255, 0.9);
+  --theme-2-text: #ffffff;
+  --theme-2-shadow: rgba(30, 144, 255, 0.3);
+
+  /* 主题3：愿你幸福 - 温馨紫色系 */
+  --theme-3-primary: rgba(221, 160, 221, 0.8);
+  --theme-3-secondary: rgba(186, 85, 211, 0.6);
+  --theme-3-accent: rgba(138, 43, 226, 0.9);
+  --theme-3-text: #ffffff;
+  --theme-3-shadow: rgba(138, 43, 226, 0.3);
+
+  /* 默认主题 */
+  --current-primary: var(--theme-1-primary);
+  --current-secondary: var(--theme-1-secondary);
+  --current-accent: var(--theme-1-accent);
+  --current-text: var(--theme-1-text);
+  --current-shadow: var(--theme-1-shadow);
+}
+
+/* ===== 主题1样式 ===== */
+[data-theme="0"],
+.theme-1 {
+  --current-primary: var(--theme-1-primary);
+  --current-secondary: var(--theme-1-secondary);
+  --current-accent: var(--theme-1-accent);
+  --current-text: var(--theme-1-text);
+  --current-shadow: var(--theme-1-shadow);
+}
+
+/* 主题1背景图片位置调整 - 向下偏移显示更多下半部分 */
+[data-theme="0"] .background-image,
+.theme-1 .background-image {
+  object-position: center 58%;
+}
+
+.theme-1 .theme-btn.active {
+  background: var(--theme-1-primary);
+  border-color: var(--theme-1-accent);
+  box-shadow: 0 4px 15px var(--theme-1-shadow);
+}
+
+.theme-1 .blessing-text {
+  color: var(--theme-1-text);
+  text-shadow:
+    0 2px 4px rgba(255, 20, 147, 0.5),
+    0 4px 8px rgba(255, 20, 147, 0.3),
+    0 8px 16px rgba(255, 20, 147, 0.2);
+}
+
+.theme-1 .play-btn:hover,
+.theme-1 .pause-btn:hover {
+  background: var(--theme-1-primary);
+  box-shadow: 0 4px 12px var(--theme-1-shadow);
+}
+
+/* ===== 主题2样式 ===== */
+[data-theme="1"],
+.theme-2 {
+  --current-primary: var(--theme-2-primary);
+  --current-secondary: var(--theme-2-secondary);
+  --current-accent: var(--theme-2-accent);
+  --current-text: var(--theme-2-text);
+  --current-shadow: var(--theme-2-shadow);
+}
+
+.theme-2 .theme-btn.active {
+  background: var(--theme-2-primary);
+  border-color: var(--theme-2-accent);
+  box-shadow: 0 4px 15px var(--theme-2-shadow);
+}
+
+.theme-2 .blessing-text {
+  color: var(--theme-2-text);
+  text-shadow:
+    0 2px 4px rgba(30, 144, 255, 0.5),
+    0 4px 8px rgba(30, 144, 255, 0.3),
+    0 8px 16px rgba(30, 144, 255, 0.2);
+}
+
+.theme-2 .play-btn:hover,
+.theme-2 .pause-btn:hover {
+  background: var(--theme-2-primary);
+  box-shadow: 0 4px 12px var(--theme-2-shadow);
+}
+
+/* ===== 主题3样式 ===== */
+[data-theme="2"],
+.theme-3 {
+  --current-primary: var(--theme-3-primary);
+  --current-secondary: var(--theme-3-secondary);
+  --current-accent: var(--theme-3-accent);
+  --current-text: var(--theme-3-text);
+  --current-shadow: var(--theme-3-shadow);
+}
+
+/* 主题3背景图片位置调整 - 向下偏移显示更多下半部分 */
+[data-theme="2"] .background-image,
+.theme-3 .background-image {
+  object-position: center 56%;
+}
+
+.theme-3 .theme-btn.active {
+  background: var(--theme-3-primary);
+  border-color: var(--theme-3-accent);
+  box-shadow: 0 4px 15px var(--theme-3-shadow);
+}
+
+.theme-3 .blessing-text {
+  color: var(--theme-3-text);
+  text-shadow:
+    0 2px 4px rgba(138, 43, 226, 0.5),
+    0 4px 8px rgba(138, 43, 226, 0.3),
+    0 8px 16px rgba(138, 43, 226, 0.2);
+}
+
+.theme-3 .play-btn:hover,
+.theme-3 .pause-btn:hover {
+  background: var(--theme-3-primary);
+  box-shadow: 0 4px 12px var(--theme-3-shadow);
+}
+
+/* ===== 主题切换过渡效果 ===== */
+/* 注意：theme-btn的transition已在main.css中定义 */
+.blessing-text,
+.play-btn,
+.pause-btn,
+.vinyl-record {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== 主题特定的背景叠加效果 ===== */
+.main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    var(--current-primary) 0%,
+    transparent 50%,
+    var(--current-secondary) 100%
+  );
+  opacity: 0.3;
+  z-index: 0;
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+/* ===== 主题特定的装饰元素 ===== */
+.theme-decoration {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--current-accent) 0%,
+    transparent 70%
+  );
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: -1;
+  animation: floatingDecoration 6s ease-in-out infinite;
+}
+
+.theme-decoration:nth-child(1) {
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.theme-decoration:nth-child(2) {
+  top: 20%;
+  right: 15%;
+  animation-delay: 2s;
+}
+
+.theme-decoration:nth-child(3) {
+  bottom: 15%;
+  left: 20%;
+  animation-delay: 4s;
+}
+
+@keyframes floatingDecoration {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 0.2;
+  }
+}
+
+/* ===== 主题特定的文字样式 ===== */
+.theme-1 .blessing-text {
+  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(
+    45deg,
+    #ff69b4,
+    #ff1493,
+    #ff69b4
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+.theme-2 .blessing-text {
+  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(
+    45deg,
+    #87ceeb,
+    #1e90ff,
+    #87ceeb
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+.theme-3 .blessing-text {
+  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(
+    45deg,
+    #dda0dd,
+    #8a2be2,
+    #dda0dd
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ===== 响应式背景位置调整 ===== */
+/* 移动端设备上稍微调整背景位置 */
+@media (max-width: 768px) {
+  [data-theme="0"] .background-image,
+  .theme-1 .background-image {
+    object-position: center 55%;
+  }
+
+  [data-theme="2"] .background-image,
+  .theme-3 .background-image {
+    object-position: center 54%;
+  }
+}
+
+/* 横屏模式下的背景位置优化 */
+@media (orientation: landscape) and (max-height: 500px) {
+  [data-theme="0"] .background-image,
+  .theme-1 .background-image,
+  [data-theme="2"] .background-image,
+  .theme-3 .background-image {
+    object-position: center 50%;
+  }
+}
+
+/* ===== 主题切换时的特殊效果 ===== */
+.theme-switching {
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-switching::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--current-accent) 50%,
+    transparent 100%
+  );
+  opacity: 0.3;
+  animation: themeWipe 0.8s ease-in-out;
+  z-index: 1000;
+}
+
+@keyframes themeWipe {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* ===== 响应式主题调整 ===== */
+@media (max-width: 768px) {
+  .theme-decoration {
+    width: 60px;
+    height: 60px;
+  }
+
+  .main::before {
+    opacity: 0.2;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-decoration {
+    display: none; /* 在小屏幕上隐藏装饰元素以提升性能 */
+  }
+}

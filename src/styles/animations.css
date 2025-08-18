@@ -1,0 +1,214 @@
+/* ===== 唱片旋转动画 ===== */
+@keyframes vinylSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.vinyl-record {
+  /* 默认状态：动画暂停 */
+  animation: vinylSpin 5s linear infinite;
+  animation-play-state: paused;
+  /* GPU加速优化 */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.vinyl-record.playing {
+  /* 播放状态：动画运行 */
+  animation-play-state: running !important;
+}
+
+/* ===== 主题切换动画 ===== */
+.background-image {
+  /* 背景图片切换动画 */
+  transition: opacity 0.6s ease-in-out;
+  will-change: opacity;
+}
+
+.background-image.fade-out {
+  opacity: 0;
+}
+
+.blessing-text {
+  /* 文字切换动画 */
+  transition: all 0.5s ease-in-out;
+  will-change: transform, opacity;
+}
+
+.blessing-text.fade-out {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* ===== 按钮交互动画 ===== */
+.theme-btn {
+  /* 按钮状态切换动画 */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, background-color, border-color;
+}
+
+.theme-btn:hover {
+  /* 悬停动画 */
+  animation: buttonPulse 2s ease-in-out infinite;
+}
+
+.theme-btn.active {
+  /* 激活状态动画 */
+  animation: buttonGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    transform: translateY(-2px) scale(1);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.02);
+  }
+}
+
+@keyframes buttonGlow {
+  0% {
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+  }
+}
+
+/* ===== 播放器控制动画 ===== */
+.play-btn,
+.pause-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, background-color;
+}
+
+.play-btn:hover,
+.pause-btn:hover {
+  transform: scale(1.1);
+}
+
+.play-btn.pulse-animation {
+  animation: playButtonPulse 1s ease-in-out 3;
+}
+
+@keyframes playButtonPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+  }
+}
+
+/* 移除了专辑图片的悬停动画效果，避免干扰播放时的旋转动画 */
+
+/* ===== 页面加载动画 ===== */
+.header {
+  animation: slideInFromTop 0.8s ease-out;
+}
+
+.footer {
+  animation: slideInFromBottom 0.8s ease-out;
+}
+
+.main {
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ===== 主题切换特效 ===== */
+.theme-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999;
+  transition: opacity 0.3s ease;
+}
+
+.theme-transition.active {
+  opacity: 1;
+}
+
+/* ===== 音频可视化效果（可选） ===== */
+.audio-visualizer {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 4px;
+  background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 100%);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.audio-visualizer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%);
+  animation: audioWave 2s linear infinite;
+}
+
+.audio-visualizer.playing::before {
+  animation-play-state: running;
+}
+
+@keyframes audioWave {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
