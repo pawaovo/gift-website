@@ -152,17 +152,27 @@ export class LyricsParser {
    */
   async loadFromURL(url) {
     try {
+      console.log('正在请求歌词文件:', url);
       const response = await fetch(url);
+
+      console.log('歌词文件响应状态:', response.status, response.statusText);
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const lrcContent = await response.text();
+      console.log('歌词文件内容长度:', lrcContent.length, '字符');
+      console.log('歌词文件前100字符:', lrcContent.substring(0, 100));
+
       this.parseLRC(lrcContent);
-      
-      return this.hasLyrics();
+
+      const hasLyrics = this.hasLyrics();
+      console.log('歌词解析结果:', hasLyrics ? '成功' : '失败', '共', this.lyrics.length, '行');
+
+      return hasLyrics;
     } catch (error) {
-      console.error('加载LRC文件失败:', error);
+      console.error('加载LRC文件失败:', url, error);
       this.clear();
       return false;
     }

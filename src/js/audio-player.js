@@ -650,18 +650,25 @@ export class AudioPlayer {
     }
 
     try {
+      console.log('开始加载歌词文件:', lyricsUrl);
       const success = await this.lyricsParser.loadFromURL(lyricsUrl);
       if (success) {
-        console.log('歌词加载成功:', lyricsUrl);
+        console.log('歌词加载成功:', lyricsUrl, '共', this.lyricsParser.getAllLyrics().length, '行歌词');
         // 如果正在播放，立即更新歌词显示
         if (this.isPlaying) {
           this.updateLyrics();
         }
       } else {
         console.warn('歌词加载失败或无有效歌词:', lyricsUrl);
+        if (this.elements.currentLyric) {
+          this.elements.currentLyric.textContent = '♪ 音乐播放中...';
+        }
       }
     } catch (error) {
       console.error('加载歌词时出错:', error);
+      if (this.elements.currentLyric) {
+        this.elements.currentLyric.textContent = '♪ 音乐播放中...';
+      }
     }
   }
 

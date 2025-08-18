@@ -43,7 +43,7 @@ export const THEMES = [
     background: '/images/bg3.png',
     music: '/audio/theme3.mp3',
     album: '/images/album3.jpg',
-    lyrics: '/lyrics/勇 - 杨千嬅.lrc',
+    lyrics: '/lyrics/theme3.lrc',
     colors: {
       primary: 'rgba(221, 160, 221, 0.8)',
       secondary: 'rgba(186, 85, 211, 0.6)',
