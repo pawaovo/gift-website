@@ -104,6 +104,10 @@ class BirthdayApp {
       // 更新页面标题
       this.updatePageTitle(theme);
 
+      // 主题切换后自动播放新主题的音乐
+      console.log('主题切换完成，尝试自动播放新主题音乐');
+      await this.attemptAutoPlayAfterThemeChange();
+
       // 触发主题切换完成事件
       this.onThemeChangeComplete(theme);
 
@@ -469,10 +473,18 @@ class BirthdayApp {
         return;
       }
 
+      console.log('音频播放器状态:', {
+        hasAudio: !!this.audioPlayer.audio,
+        currentTrack: this.audioPlayer.currentTrack,
+        isPlaying: this.audioPlayer.isCurrentlyPlaying()
+      });
+
       // 检查是否有当前音轨
       if (!this.audioPlayer.currentTrack) {
         // 如果没有音轨，加载默认主题的音乐
         const currentTheme = this.themeSwitcher.getCurrentTheme();
+        console.log('当前主题:', currentTheme);
+
         if (currentTheme && currentTheme.music) {
           console.log('加载默认主题音乐:', currentTheme.music);
           await this.audioPlayer.changeTrack(
@@ -480,8 +492,16 @@ class BirthdayApp {
             currentTheme.album,
             currentTheme.lyrics
           );
+
+          // 等待一小段时间确保音轨加载
+          await new Promise(resolve => setTimeout(resolve, 500));
+        } else {
+          console.warn('没有找到默认主题或音乐文件');
+          return;
         }
       }
+
+      console.log('准备播放音乐，当前音轨:', this.audioPlayer.currentTrack);
 
       // 尝试播放音乐
       await this.audioPlayer.play();
@@ -499,6 +519,38 @@ class BirthdayApp {
       } else {
         console.error('自动播放出现未知错误:', error);
       }
+    }
+  }
+
+  /**
+   * 主题切换后尝试自动播放
+   */
+  async attemptAutoPlayAfterThemeChange() {
+    try {
+      // 等待一小段时间确保音轨已切换
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      // 检查音频播放器状态
+      if (!this.audioPlayer || !this.audioPlayer.audio) {
+        console.warn('音频播放器未初始化');
+        return;
+      }
+
+      console.log('主题切换后音频状态:', {
+        hasAudio: !!this.audioPlayer.audio,
+        currentTrack: this.audioPlayer.currentTrack,
+        isPlaying: this.audioPlayer.isCurrentlyPlaying()
+      });
+
+      // 如果当前没有播放，尝试播放
+      if (!this.audioPlayer.isCurrentlyPlaying()) {
+        await this.audioPlayer.play();
+        console.log('主题切换后自动播放成功！');
+      }
+
+    } catch (error) {
+      console.log('主题切换后自动播放失败:', error.message);
+      // 主题切换时的自动播放失败不需要设置用户交互，因为用户已经交互过了
     }
   }
 
