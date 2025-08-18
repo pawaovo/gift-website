@@ -462,28 +462,37 @@ class BirthdayApp {
 
   /**
    * 触发初始自动播放
-   * 通过主动触发主题切换事件来复用已有的自动播放逻辑
+   * 通过模拟主题切换来复用已有的主题切换自动播放逻辑
    */
   async triggerInitialAutoPlay() {
     try {
       console.log('触发初始自动播放...');
 
       // 等待一小段时间确保所有组件初始化完成
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // 获取当前主题索引
       const currentThemeIndex = this.themeSwitcher.currentThemeIndex;
       console.log('当前主题索引:', currentThemeIndex);
 
-      // 直接触发主题切换完成事件，模拟主题切换
-      console.log('模拟主题切换完成事件，触发自动播放');
-      const currentTheme = this.themeSwitcher.getCurrentTheme();
+      // 策略：先切换到另一个主题，再切换回来，这样能确保触发主题切换逻辑
+      console.log('模拟主题切换来触发自动播放');
 
-      // 手动调用主题切换处理函数
-      await this.handleThemeChange({
-        theme: currentTheme,
-        index: currentThemeIndex
-      });
+      // 选择一个不同的主题索引
+      const tempThemeIndex = currentThemeIndex === 0 ? 1 : 0;
+
+      // 先快速切换到临时主题（不播放音乐）
+      console.log(`临时切换到主题${tempThemeIndex + 1}`);
+      await this.themeSwitcher.switchTheme(tempThemeIndex);
+
+      // 等待一小段时间
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      // 再切换回原主题（这次会触发自动播放）
+      console.log(`切换回主题${currentThemeIndex + 1}，触发自动播放`);
+      await this.themeSwitcher.switchTheme(currentThemeIndex);
+
+      console.log('模拟主题切换完成');
 
     } catch (error) {
       console.error('初始自动播放触发失败:', error);
