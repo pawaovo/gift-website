@@ -462,7 +462,7 @@ class BirthdayApp {
 
   /**
    * 触发初始自动播放
-   * 通过模拟主题切换来复用已有的主题切换自动播放逻辑
+   * 通过模拟点击播放按钮来直接触发音乐播放
    */
   async triggerInitialAutoPlay() {
     try {
@@ -471,35 +471,29 @@ class BirthdayApp {
       // 等待一小段时间确保所有组件初始化完成
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // 获取当前主题索引
-      const currentThemeIndex = this.themeSwitcher.currentThemeIndex;
-      console.log('当前主题索引:', currentThemeIndex);
+      // 检查音频播放器状态
+      if (!this.audioPlayer || !this.audioPlayer.audio) {
+        console.warn('音频播放器未初始化');
+        return;
+      }
 
-      // 策略：先切换到另一个主题，再切换回来，这样能确保触发主题切换逻辑
-      console.log('模拟主题切换来触发自动播放');
+      console.log('模拟点击播放按钮，直接触发音乐播放');
 
-      // 选择一个不同的主题索引
-      const tempThemeIndex = currentThemeIndex === 0 ? 1 : 0;
+      // 直接调用音频播放器的播放方法
+      await this.audioPlayer.play();
 
-      // 先快速切换到临时主题（不播放音乐）
-      console.log(`临时切换到主题${tempThemeIndex + 1}`);
-      await this.themeSwitcher.switchTheme(tempThemeIndex);
-
-      // 等待一小段时间
-      await new Promise(resolve => setTimeout(resolve, 200));
-
-      // 再切换回原主题（这次会触发自动播放）
-      console.log(`切换回主题${currentThemeIndex + 1}，触发自动播放`);
-      await this.themeSwitcher.switchTheme(currentThemeIndex);
-
-      console.log('模拟主题切换完成');
+      console.log('模拟播放按钮点击完成，音乐开始播放');
 
     } catch (error) {
-      console.error('初始自动播放触发失败:', error);
+      console.log('模拟播放按钮点击失败:', error.message);
 
-      // 如果失败，回退到原来的自动播放逻辑
-      console.log('回退到原始自动播放逻辑');
-      await this.attemptAutoPlay();
+      // 处理自动播放限制
+      if (error.name === 'NotAllowedError') {
+        console.log('浏览器阻止了自动播放，设置用户交互后播放');
+        this.setupAutoPlayOnInteraction();
+      } else {
+        console.error('播放失败:', error);
+      }
     }
   }
 
