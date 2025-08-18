@@ -284,7 +284,7 @@ body {
   background: rgba(255, 255, 255, 0.8);
 }
 
-/* 播放和暂停图标样式统一 */
+/* 播放和暂停图标样式统一 - 强制覆盖所有主题颜色 */
 .play-icon,
 .pause-icon {
   color: #333 !important;
@@ -298,6 +298,32 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* 强制覆盖所有可能的主题颜色变量 */
+.play-control-btn .play-icon,
+.play-control-btn .pause-icon,
+.play-btn .play-icon,
+.play-btn .pause-icon,
+.pause-btn .play-icon,
+.pause-btn .pause-icon {
+  color: #333 !important;
+}
+
+/* 覆盖主题特定的颜色设置 */
+.theme-1 .play-icon,
+.theme-1 .pause-icon,
+.theme-2 .play-icon,
+.theme-2 .pause-icon,
+.theme-3 .play-icon,
+.theme-3 .pause-icon,
+[data-theme="0"] .play-icon,
+[data-theme="0"] .pause-icon,
+[data-theme="1"] .play-icon,
+[data-theme="1"] .pause-icon,
+[data-theme="2"] .play-icon,
+[data-theme="2"] .pause-icon {
+  color: #333 !important;
 }
 
 .time-display {
