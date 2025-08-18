@@ -252,6 +252,15 @@ body {
   box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
 }
 
+/* 移除进度条的focus和outline效果 */
+.progress-bar:focus,
+.progress-bar:focus-visible,
+.progress-container:focus,
+.progress-container:focus-visible {
+  outline: none;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
 /* 播放控制按钮 */
 .play-control-btn {
   width: 36px; /* 减小按钮尺寸 */
@@ -536,7 +545,10 @@ body {
 /* 移动端触摸优化 */
 .theme-btn,
 .play-control-btn,
-.vinyl-record {
+.vinyl-record,
+.progress-bar,
+.progress-container,
+.progress-fill {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -652,6 +664,23 @@ body {
     background: transparent;
     backdrop-filter: none;
   }
+
+  /* 移动端进度条触摸优化 */
+  .progress-bar,
+  .progress-container {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    outline: none !important;
+  }
+
+  .progress-bar:focus,
+  .progress-bar:active,
+  .progress-bar:focus-visible {
+    outline: none !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  }
 }
 
 /* 触摸设备特定样式 */
@@ -666,9 +695,23 @@ body {
   /* 移除hover效果，避免触摸设备的粘滞 */
   .theme-btn:hover,
   .play-control-btn:hover,
-  .vinyl-record:hover {
+  .vinyl-record:hover,
+  .progress-bar:hover {
     transform: none;
     animation: none;
+  }
+
+  /* 触摸设备进度条优化 */
+  .progress-bar,
+  .progress-container {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+  }
+
+  .progress-bar:focus,
+  .progress-bar:active {
+    outline: none !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
   }
 }
 
