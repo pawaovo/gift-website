@@ -622,13 +622,13 @@ class BirthdayApp {
    * 设置用户交互后自动播放
    */
   setupAutoPlayOnInteraction() {
-    const playOnInteraction = async () => {
+    const playOnInteraction = async (event) => {
       try {
-        console.log('用户交互触发，尝试播放音乐');
+        console.log('👆 用户交互触发，尝试播放音乐，事件类型:', event.type);
 
         // 检查音轨状态
         if (!this.audioPlayer.currentTrack) {
-          console.log('用户交互时音轨未加载，尝试加载');
+          console.log('🔄 用户交互时音轨未加载，尝试加载');
           const currentTheme = this.themeSwitcher.getCurrentTheme();
           if (currentTheme && currentTheme.music) {
             await this.audioPlayer.changeTrack(
@@ -640,16 +640,20 @@ class BirthdayApp {
           }
         }
 
+        console.log('🎵 开始播放音乐...');
         await this.audioPlayer.play();
-        console.log('用户交互后自动播放成功');
+        console.log('✅ 用户交互后自动播放成功！');
 
         // 移除事件监听器，避免重复触发
         document.removeEventListener('click', playOnInteraction);
         document.removeEventListener('touchstart', playOnInteraction);
         document.removeEventListener('keydown', playOnInteraction);
 
+        console.log('🧹 已移除用户交互监听器');
+
       } catch (error) {
-        console.log('用户交互后播放仍然失败:', error.message);
+        console.log('❌ 用户交互后播放仍然失败:', error.message);
+        console.error('错误详情:', error);
       }
     };
 
@@ -658,7 +662,7 @@ class BirthdayApp {
     document.addEventListener('touchstart', playOnInteraction, { once: true, passive: true });
     document.addEventListener('keydown', playOnInteraction, { once: true, passive: true });
 
-    console.log('已设置用户交互后自动播放');
+    console.log('👂 已设置用户交互后自动播放监听器');
   }
 
   /**
