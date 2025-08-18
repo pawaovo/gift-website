@@ -427,6 +427,9 @@ body {
 
   .footer {
     padding: 1rem;
+    /* 移动端移除模糊玻璃窗效果 */
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: none;
   }
 
   /* 移动端音频播放器垂直布局 */
@@ -533,8 +536,7 @@ body {
 /* 移动端触摸优化 */
 .theme-btn,
 .play-control-btn,
-.vinyl-record,
-.progress-bar {
+.vinyl-record {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -587,6 +589,9 @@ body {
 
   .footer {
     padding: 0.75rem;
+    /* 横屏模式下移动端也移除模糊效果 */
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: none;
   }
 
   /* 横屏模式音频播放器垂直布局 */
@@ -642,22 +647,10 @@ body {
       0 2px 4px rgba(0, 0, 0, 0.4);
   }
 
-  /* 移除底部播放区域的模糊效果 */
+  /* 移动端移除底部播放区域的模糊玻璃窗效果 */
   .footer {
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: none;
-    background: rgba(0, 0, 0, 0.2); /* 增加背景透明度以保持可读性 */
-  }
-
-  /* 移除进度条点击时的闪烁效果 */
-  .progress-bar:active {
-    height: 6px; /* 保持原始高度，不变化 */
-    outline: none;
-    box-shadow: none;
-  }
-
-  .progress-bar:focus {
-    outline: none;
-    box-shadow: none;
   }
 }
 
@@ -668,23 +661,14 @@ body {
     min-width: 48px;
   }
 
+
+
   /* 移除hover效果，避免触摸设备的粘滞 */
   .theme-btn:hover,
   .play-control-btn:hover,
-  .vinyl-record:hover,
-  .progress-bar:hover {
+  .vinyl-record:hover {
     transform: none;
     animation: none;
-    height: auto; /* 进度条保持原始高度 */
-    box-shadow: none;
-  }
-
-  /* 移除触摸设备上进度条的所有交互效果 */
-  .progress-bar:active,
-  .progress-bar:focus {
-    height: 6px;
-    outline: none;
-    box-shadow: none;
   }
 }
 
@@ -813,5 +797,8 @@ html, body {
 
   .footer {
     padding: 1rem;
+    /* 小屏幕高度下移动端移除模糊效果 */
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: none;
   }
 }
