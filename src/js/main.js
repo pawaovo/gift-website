@@ -98,20 +98,12 @@ class BirthdayApp {
     const { theme, index } = data;
 
     try {
-      console.log('主题切换完成，尝试自动播放新主题音乐');
-
       // 更新页面标题
       this.updatePageTitle(theme);
 
-      // 切换音频到新主题
+      // 切换音频到新主题并自动播放
       if (this.audioPlayer && theme.music) {
-        await this.audioPlayer.changeTrack(
-          theme.music,
-          theme.album,
-          theme.lyrics
-        );
-
-        // 尝试自动播放新主题音乐
+        await this.audioPlayer.changeTrack(theme.music, theme.album, theme.lyrics);
         await this.attemptAutoPlayAfterThemeChange();
       }
 
@@ -128,22 +120,11 @@ class BirthdayApp {
    */
   async attemptAutoPlayAfterThemeChange() {
     try {
-      console.log('尝试主题切换后自动播放');
-
-      // 等待一小段时间确保音频加载完成
+      // 等待音频加载完成后播放
       await new Promise(resolve => setTimeout(resolve, 300));
-
-      // 尝试播放
       await this.audioPlayer.play();
-      console.log('主题切换后自动播放成功！');
-
     } catch (error) {
-      if (error.name === 'NotAllowedError') {
-        console.log('自动播放被阻止，设置用户交互后播放');
-        this.setupAutoPlayOnInteraction();
-      } else {
-        console.log('主题切换后播放失败:', error.message);
-      }
+      console.log('主题切换后播放失败:', error.message);
     }
   }
 
