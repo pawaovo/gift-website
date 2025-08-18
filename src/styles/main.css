@@ -427,8 +427,8 @@ body {
 
   .footer {
     padding: 1rem;
-    /* 移动端移除模糊玻璃窗效果 */
-    background: rgba(0, 0, 0, 0.3);
+    /* 移动端让底部播放区域完全融入页面 */
+    background: transparent;
     backdrop-filter: none;
   }
 
@@ -589,8 +589,8 @@ body {
 
   .footer {
     padding: 0.75rem;
-    /* 横屏模式下移动端也移除模糊效果 */
-    background: rgba(0, 0, 0, 0.3);
+    /* 横屏模式下移动端让底部区域完全融入页面 */
+    background: transparent;
     backdrop-filter: none;
   }
 
@@ -647,9 +647,9 @@ body {
       0 2px 4px rgba(0, 0, 0, 0.4);
   }
 
-  /* 移动端移除底部播放区域的模糊玻璃窗效果 */
+  /* 移动端让底部播放区域完全融入页面 */
   .footer {
-    background: rgba(0, 0, 0, 0.3);
+    background: transparent;
     backdrop-filter: none;
   }
 }
@@ -797,8 +797,8 @@ html, body {
 
   .footer {
     padding: 1rem;
-    /* 小屏幕高度下移动端移除模糊效果 */
-    background: rgba(0, 0, 0, 0.3);
+    /* 小屏幕高度下移动端让底部区域完全融入页面 */
+    background: transparent;
     backdrop-filter: none;
   }
 }
