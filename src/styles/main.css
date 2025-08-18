@@ -284,6 +284,17 @@ body {
   background: rgba(255, 255, 255, 0.8);
 }
 
+/* 播放和暂停图标样式统一 */
+.play-icon,
+.pause-icon {
+  color: #333 !important;
+  font-size: inherit;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .time-display {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.85);
@@ -323,6 +334,12 @@ body {
     height: 32px;
     font-size: 12px;
   }
+
+  /* 移动端播放图标颜色统一 */
+  .play-icon,
+  .pause-icon {
+    color: #333 !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -355,6 +372,12 @@ body {
     width: 30px;
     height: 30px;
     font-size: 10px;
+  }
+
+  /* 小屏移动端播放图标颜色统一 */
+  .play-icon,
+  .pause-icon {
+    color: #333 !important;
   }
 }
 
@@ -471,6 +494,12 @@ body {
     width: 36px;
     height: 36px;
     font-size: 14px;
+  }
+
+  /* 中等屏幕播放图标颜色统一 */
+  .play-icon,
+  .pause-icon {
+    color: #333 !important;
   }
 }
 
