@@ -473,28 +473,35 @@ class BirthdayApp {
         return;
       }
 
+      // 等待一段时间确保ThemeSwitcher已经加载了音轨
+      console.log('等待音轨加载完成...');
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       console.log('音频播放器状态:', {
         hasAudio: !!this.audioPlayer.audio,
         currentTrack: this.audioPlayer.currentTrack,
-        isPlaying: this.audioPlayer.isCurrentlyPlaying()
+        isPlaying: this.audioPlayer.isCurrentlyPlaying(),
+        audioSrc: this.audioPlayer.audio ? this.audioPlayer.audio.src : 'no src'
       });
 
       // 检查是否有当前音轨
       if (!this.audioPlayer.currentTrack) {
+        console.warn('音轨未加载，尝试手动加载默认主题音乐');
+
         // 如果没有音轨，加载默认主题的音乐
         const currentTheme = this.themeSwitcher.getCurrentTheme();
         console.log('当前主题:', currentTheme);
 
         if (currentTheme && currentTheme.music) {
-          console.log('加载默认主题音乐:', currentTheme.music);
+          console.log('手动加载默认主题音乐:', currentTheme.music);
           await this.audioPlayer.changeTrack(
             currentTheme.music,
             currentTheme.album,
             currentTheme.lyrics
           );
 
-          // 等待一小段时间确保音轨加载
-          await new Promise(resolve => setTimeout(resolve, 500));
+          // 等待音轨加载
+          await new Promise(resolve => setTimeout(resolve, 800));
         } else {
           console.warn('没有找到默认主题或音乐文件');
           return;
@@ -560,6 +567,22 @@ class BirthdayApp {
   setupAutoPlayOnInteraction() {
     const playOnInteraction = async () => {
       try {
+        console.log('用户交互触发，尝试播放音乐');
+
+        // 检查音轨状态
+        if (!this.audioPlayer.currentTrack) {
+          console.log('用户交互时音轨未加载，尝试加载');
+          const currentTheme = this.themeSwitcher.getCurrentTheme();
+          if (currentTheme && currentTheme.music) {
+            await this.audioPlayer.changeTrack(
+              currentTheme.music,
+              currentTheme.album,
+              currentTheme.lyrics
+            );
+            await new Promise(resolve => setTimeout(resolve, 300));
+          }
+        }
+
         await this.audioPlayer.play();
         console.log('用户交互后自动播放成功');
 
