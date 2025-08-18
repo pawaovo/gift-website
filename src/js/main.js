@@ -39,6 +39,9 @@ class BirthdayApp {
       // 应用初始主题
       this.applyInitialTheme();
 
+      // 尝试自动播放音乐
+      await this.attemptAutoPlay();
+
       this.isInitialized = true;
       console.log('生日礼物网页初始化完成！');
 
@@ -451,6 +454,79 @@ class BirthdayApp {
 
     // 更新页面标题
     this.updatePageTitle(currentTheme);
+  }
+
+  /**
+   * 尝试自动播放音乐
+   */
+  async attemptAutoPlay() {
+    try {
+      console.log('尝试自动播放音乐...');
+
+      // 等待音频播放器完全初始化
+      if (!this.audioPlayer || !this.audioPlayer.audio) {
+        console.warn('音频播放器未初始化，跳过自动播放');
+        return;
+      }
+
+      // 检查是否有当前音轨
+      if (!this.audioPlayer.currentTrack) {
+        // 如果没有音轨，加载默认主题的音乐
+        const currentTheme = this.themeSwitcher.getCurrentTheme();
+        if (currentTheme && currentTheme.music) {
+          console.log('加载默认主题音乐:', currentTheme.music);
+          await this.audioPlayer.changeTrack(
+            currentTheme.music,
+            currentTheme.album,
+            currentTheme.lyrics
+          );
+        }
+      }
+
+      // 尝试播放音乐
+      await this.audioPlayer.play();
+      console.log('自动播放成功！');
+
+    } catch (error) {
+      console.log('自动播放失败:', error.message);
+
+      // 处理不同类型的自动播放限制
+      if (error.name === 'NotAllowedError') {
+        console.log('浏览器阻止了自动播放，需要用户交互');
+        this.setupAutoPlayOnInteraction();
+      } else if (error.name === 'AbortError') {
+        console.log('音频加载被中断');
+      } else {
+        console.error('自动播放出现未知错误:', error);
+      }
+    }
+  }
+
+  /**
+   * 设置用户交互后自动播放
+   */
+  setupAutoPlayOnInteraction() {
+    const playOnInteraction = async () => {
+      try {
+        await this.audioPlayer.play();
+        console.log('用户交互后自动播放成功');
+
+        // 移除事件监听器，避免重复触发
+        document.removeEventListener('click', playOnInteraction);
+        document.removeEventListener('touchstart', playOnInteraction);
+        document.removeEventListener('keydown', playOnInteraction);
+
+      } catch (error) {
+        console.log('用户交互后播放仍然失败:', error.message);
+      }
+    };
+
+    // 监听各种用户交互事件
+    document.addEventListener('click', playOnInteraction, { once: true, passive: true });
+    document.addEventListener('touchstart', playOnInteraction, { once: true, passive: true });
+    document.addEventListener('keydown', playOnInteraction, { once: true, passive: true });
+
+    console.log('已设置用户交互后自动播放');
   }
 
   /**

@@ -184,20 +184,42 @@ export class AudioPlayer {
     }
 
     try {
-      // 移动端需要用户交互才能播放
+      // 确保音频已加载
+      if (this.audio.readyState < 2) {
+        console.log('音频尚未加载完成，等待加载...');
+        await new Promise((resolve, reject) => {
+          const handleCanPlay = () => {
+            this.audio.removeEventListener('canplay', handleCanPlay);
+            this.audio.removeEventListener('error', handleError);
+            resolve();
+          };
+
+          const handleError = (e) => {
+            this.audio.removeEventListener('canplay', handleCanPlay);
+            this.audio.removeEventListener('error', handleError);
+            reject(e);
+          };
+
+          this.audio.addEventListener('canplay', handleCanPlay);
+          this.audio.addEventListener('error', handleError);
+        });
+      }
+
+      // 尝试播放音频
       await this.audio.play();
+      console.log('音频播放成功');
+
     } catch (error) {
       console.error('播放失败:', error);
 
       // 处理自动播放策略限制
       if (error.name === 'NotAllowedError') {
-        this.showPlayPrompt();
+        console.log('浏览器阻止自动播放，需要用户交互');
+        // 不显示提示，让主应用处理
       }
 
-      this.triggerCallbacks('onError', {
-        error,
-        track: this.currentTrack
-      });
+      // 重新抛出错误，让调用者处理
+      throw error;
     }
   }
 
@@ -418,6 +440,14 @@ export class AudioPlayer {
    */
   isCurrentlyPlaying() {
     return this.isPlaying;
+  }
+
+  /**
+   * 检查是否有音轨可播放
+   * @returns {boolean} 是否有可播放的音轨
+   */
+  hasTrack() {
+    return !!(this.currentTrack && this.audio);
   }
 
   /**
