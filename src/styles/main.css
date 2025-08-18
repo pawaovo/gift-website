@@ -293,6 +293,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .time-display {
@@ -335,10 +340,15 @@ body {
     font-size: 12px;
   }
 
-  /* 移动端播放图标颜色统一 */
+  /* 移动端播放图标样式统一 */
   .play-icon,
   .pause-icon {
     color: #333 !important;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -374,10 +384,15 @@ body {
     font-size: 10px;
   }
 
-  /* 小屏移动端播放图标颜色统一 */
+  /* 小屏移动端播放图标样式统一 */
   .play-icon,
   .pause-icon {
     color: #333 !important;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -496,10 +511,15 @@ body {
     font-size: 14px;
   }
 
-  /* 中等屏幕播放图标颜色统一 */
+  /* 中等屏幕播放图标样式统一 */
   .play-icon,
   .pause-icon {
     color: #333 !important;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
