@@ -328,6 +328,24 @@ body {
     order: -1; /* 将进度条区域移到顶部 */
     width: 100%; /* 确保占据全宽 */
   }
+
+  /* 移除小屏幕模糊效果 */
+  .footer {
+    backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.85); /* 更高不透明度 */
+  }
+
+  .header {
+    backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.85); /* 更高不透明度 */
+  }
+
+  /* 移除小屏幕进度条交互效果 */
+  .progress-bar:active,
+  .progress-bar:hover {
+    height: 6px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
 }
 
   .vinyl-section,
@@ -533,7 +551,9 @@ body {
 /* 移动端触摸优化 */
 .theme-btn,
 .play-control-btn,
-.vinyl-record {
+.vinyl-record,
+.progress-bar,
+.progress-container {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -623,6 +643,31 @@ body {
   /* 减少动画复杂度 */
   .theme-decoration {
     display: none;
+  }
+
+  /* 移除移动端模糊效果以提升性能 */
+  .footer {
+    backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.8); /* 增加不透明度以保持可读性 */
+  }
+
+  .header {
+    backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.8); /* 增加不透明度以保持可读性 */
+  }
+
+  .theme-btn {
+    backdrop-filter: none;
+  }
+
+  /* 移除移动端进度条点击效果 */
+  .progress-bar:active {
+    height: 6px; /* 保持原始高度，不变化 */
+  }
+
+  .progress-bar:hover {
+    height: 6px; /* 移动端不需要hover效果 */
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); /* 保持原始阴影 */
   }
 
   /* 简化阴影效果 */
