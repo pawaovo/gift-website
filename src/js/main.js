@@ -40,10 +40,11 @@ class BirthdayApp {
       this.applyInitialTheme();
 
       // 主动触发一次主题切换到当前主题，复用主题切换的自动播放逻辑
+      console.log('🚀 开始触发初始自动播放...');
       await this.triggerInitialAutoPlay();
 
       this.isInitialized = true;
-      console.log('生日礼物网页初始化完成！');
+      console.log('🎉 生日礼物网页初始化完成！');
 
     } catch (error) {
       console.error('应用初始化失败:', error);
@@ -466,33 +467,47 @@ class BirthdayApp {
    */
   async triggerInitialAutoPlay() {
     try {
-      console.log('触发初始自动播放...');
+      console.log('🎵 触发初始自动播放...');
 
       // 等待一小段时间确保所有组件初始化完成
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // 检查音频播放器状态
+      // 详细检查音频播放器状态
+      console.log('🔍 检查音频播放器状态:', {
+        hasAudioPlayer: !!this.audioPlayer,
+        hasAudio: !!(this.audioPlayer && this.audioPlayer.audio),
+        currentTrack: this.audioPlayer ? this.audioPlayer.currentTrack : 'no player',
+        audioSrc: this.audioPlayer && this.audioPlayer.audio ? this.audioPlayer.audio.src : 'no src',
+        isPlaying: this.audioPlayer ? this.audioPlayer.isCurrentlyPlaying() : false
+      });
+
       if (!this.audioPlayer || !this.audioPlayer.audio) {
-        console.warn('音频播放器未初始化');
+        console.warn('❌ 音频播放器未初始化，无法自动播放');
         return;
       }
 
-      console.log('模拟点击播放按钮，直接触发音乐播放');
+      if (!this.audioPlayer.currentTrack) {
+        console.warn('❌ 没有当前音轨，无法播放');
+        return;
+      }
+
+      console.log('▶️ 模拟点击播放按钮，直接触发音乐播放');
 
       // 直接调用音频播放器的播放方法
       await this.audioPlayer.play();
 
-      console.log('模拟播放按钮点击完成，音乐开始播放');
+      console.log('✅ 模拟播放按钮点击完成，音乐开始播放');
 
     } catch (error) {
-      console.log('模拟播放按钮点击失败:', error.message);
+      console.log('❌ 模拟播放按钮点击失败:', error.message);
+      console.error('错误详情:', error);
 
       // 处理自动播放限制
       if (error.name === 'NotAllowedError') {
-        console.log('浏览器阻止了自动播放，设置用户交互后播放');
+        console.log('🚫 浏览器阻止了自动播放，设置用户交互后播放');
         this.setupAutoPlayOnInteraction();
       } else {
-        console.error('播放失败:', error);
+        console.error('💥 播放失败:', error);
       }
     }
   }
