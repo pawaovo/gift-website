@@ -192,8 +192,11 @@ export class AudioPlayer {
       // 处理自动播放策略限制
       if (error.name === 'NotAllowedError') {
         this.showPlayPrompt();
+        // 自动播放限制不是真正的错误，不触发错误回调
+        return;
       }
 
+      // 只有真正的错误才触发错误回调
       this.triggerCallbacks('onError', {
         error,
         track: this.currentTrack
