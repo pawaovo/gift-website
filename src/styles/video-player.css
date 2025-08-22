@@ -1,0 +1,238 @@
+/* ===== 视频播放器覆盖层样式 ===== */
+
+.video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.video-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.video-container {
+  position: relative;
+  width: 90%;
+  max-width: 1200px;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== 关闭按钮样式 ===== */
+
+.video-close-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  z-index: 10000;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.video-close-btn:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.video-close-btn:active {
+  background: rgba(240, 240, 240, 1);
+}
+
+.close-icon {
+  line-height: 1;
+  user-select: none;
+}
+
+/* ===== 播放提示按钮样式 ===== */
+
+.video-play-prompt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50px;
+  padding: 15px 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.video-play-prompt:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.video-play-prompt .play-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.video-play-prompt .play-text {
+  white-space: nowrap;
+}
+
+/* ===== 页面状态样式 ===== */
+
+body.video-playing {
+  overflow: hidden;
+}
+
+body.video-playing .header,
+body.video-playing .main,
+body.video-playing .footer {
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+/* ===== 响应式设计 ===== */
+
+/* 平板设备 */
+@media (max-width: 768px) {
+  .video-container {
+    width: 95%;
+    height: 85%;
+  }
+
+  .video-close-btn {
+    width: 55px;
+    height: 55px;
+    bottom: 10px;
+    font-size: 22px;
+  }
+
+  .video-play-prompt {
+    padding: 12px 25px;
+    font-size: 15px;
+  }
+
+  .video-play-prompt .play-icon {
+    font-size: 16px;
+  }
+}
+
+/* 手机设备 */
+@media (max-width: 480px) {
+  .video-container {
+    width: 98%;
+    height: 80%;
+  }
+
+  .video-close-btn {
+    width: 50px;
+    height: 50px;
+    bottom: 5px;
+    font-size: 20px;
+  }
+
+  .video-play-prompt {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 40px;
+  }
+
+  .video-play-prompt .play-icon {
+    font-size: 14px;
+  }
+
+  .video-play-prompt .play-text {
+    font-size: 13px;
+  }
+}
+
+/* ===== 动画效果 ===== */
+
+@keyframes videoFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.video-overlay.visible .video-container {
+  animation: videoFadeIn 0.5s ease-out;
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+.video-play-prompt {
+  animation: buttonPulse 2s ease-in-out infinite;
+}
+
+/* ===== 无障碍支持 ===== */
+
+.video-close-btn:focus,
+.video-play-prompt:focus {
+  outline: 3px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* 减少动画的用户偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .video-overlay,
+  .video-close-btn,
+  .video-play-prompt {
+    transition: none;
+  }
+
+  .video-overlay.visible .video-container {
+    animation: none;
+  }
+
+  .video-play-prompt {
+    animation: none;
+  }
+}

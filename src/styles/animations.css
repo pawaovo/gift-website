@@ -52,8 +52,8 @@
 }
 
 .theme-btn:hover {
-  /* 悬停动画 */
-  animation: buttonPulse 2s ease-in-out infinite;
+  /* 悬停动画 - 移除跳动效果 */
+  animation: buttonGlow 2s ease-in-out infinite alternate;
 }
 
 .theme-btn.active {
@@ -63,10 +63,10 @@
 
 @keyframes buttonPulse {
   0%, 100% {
-    transform: translateY(-2px) scale(1);
+    opacity: 1;
   }
   50% {
-    transform: translateY(-2px) scale(1.02);
+    opacity: 0.8;
   }
 }
 

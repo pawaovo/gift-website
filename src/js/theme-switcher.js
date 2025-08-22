@@ -8,7 +8,18 @@ export const THEMES = [
   {
     id: 0,
     name: '失乐园',
-    title: '생일 축하해요!',
+    title: '',
+    poem: [
+      '像被捞起的鱼',
+      '总会有这样的时刻',
+      '拼命挣扎',
+      '耗尽全部力和勇气',
+      '',
+      '最后的最后',
+      '只剩那个"死孩子"和最里面的东西',
+      '直面 等待',
+      '恢复生机 悄悄过去'
+    ],
     description: '들국화 - 걱정말아요 그대',
     background: '/images/bg1.png',
     music: '/audio/theme1.mp3',
@@ -23,7 +34,20 @@ export const THEMES = [
   {
     id: 1,
     name: '鸟人',
-    title: 'Happy Birthday!',
+    title: '',
+    poem: [
+      '必须要跳下去 淌进河吗',
+      '必须要融入一切吗',
+      '收紧 包裹',
+      '兼容 接受但不服气',
+      '',
+      '往上跳会发生什么',
+      '像鸟一样',
+      '他也没那么自由',
+      '都是选择',
+      '选择什么',
+      '选择自己'
+    ],
     description: 'Bon Iver - For Emma',
     background: '/images/bg2.png',
     music: '/audio/theme2.mp3',
@@ -38,7 +62,11 @@ export const THEMES = [
   {
     id: 2,
     name: 'Leo',
-    title: '生日快樂！',
+    title: '',
+    poem: [
+      '多运动 多学习',
+      '好好吃饭 0.o'
+    ],
     description: '楊千嬅 - 勇',
     background: '/images/bg3.png',
     music: '/audio/theme3.mp3',
@@ -87,6 +115,8 @@ export class ThemeSwitcher {
       themeButtons: document.querySelectorAll('.theme-btn'),
       backgroundImage: document.querySelector('.background-image'),
       blessingText: document.querySelector('.blessing-text'),
+      poemContainer: document.querySelector('.poem-container'),
+      poemText: document.querySelector('.poem-text'),
       main: document.querySelector('.main')
     };
   }
@@ -229,6 +259,9 @@ export class ThemeSwitcher {
     return new Promise((resolve) => {
       this.elements.backgroundImage.classList.add('fade-out');
       this.elements.blessingText.classList.add('fade-out');
+      if (this.elements.poemContainer) {
+        this.elements.poemContainer.classList.add('fade-out');
+      }
 
       setTimeout(resolve, 300); // 等待淡出动画完成
     });
@@ -246,8 +279,17 @@ export class ThemeSwitcher {
     }
 
     // 更新祝福文字
-    if (this.elements.blessingText && theme.title) {
-      this.elements.blessingText.textContent = theme.title;
+    if (this.elements.blessingText) {
+      const hasTitle = theme.title && theme.title.trim();
+      this.elements.blessingText.style.display = hasTitle ? 'block' : 'none';
+      if (hasTitle) {
+        this.elements.blessingText.textContent = theme.title;
+      }
+    }
+
+    // 更新诗歌内容
+    if (this.elements.poemText && theme.poem) {
+      this.updatePoemContent(theme.poem);
     }
 
     // 更新音频、专辑图片和歌词
@@ -260,6 +302,25 @@ export class ThemeSwitcher {
 
     // 更新body的data-theme属性
     this.elements.body.setAttribute('data-theme', theme.id);
+  }
+
+  /**
+   * 更新诗歌内容
+   * @param {Array} poemLines - 诗歌行数组
+   */
+  updatePoemContent(poemLines) {
+    if (!this.elements.poemText) return;
+
+    // 清空现有内容
+    this.elements.poemText.innerHTML = '';
+
+    // 添加新的诗歌行
+    poemLines.forEach(line => {
+      const lineElement = document.createElement('div');
+      lineElement.className = line === '' ? 'poem-line poem-break' : 'poem-line';
+      lineElement.textContent = line;
+      this.elements.poemText.appendChild(lineElement);
+    });
   }
 
   /**
@@ -283,6 +344,9 @@ export class ThemeSwitcher {
       // 移除淡出类，触发淡入动画
       this.elements.backgroundImage.classList.remove('fade-out');
       this.elements.blessingText.classList.remove('fade-out');
+      if (this.elements.poemContainer) {
+        this.elements.poemContainer.classList.remove('fade-out');
+      }
 
       setTimeout(resolve, 300); // 等待淡入动画完成
     });

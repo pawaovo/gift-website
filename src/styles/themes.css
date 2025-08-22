@@ -262,11 +262,16 @@
 }
 
 /* ===== 响应式背景位置调整 ===== */
-/* 移动端设备上稍微调整背景位置 */
+/* 平板端设备上稍微调整背景位置 */
 @media (max-width: 768px) {
   [data-theme="0"] .background-image,
   .theme-1 .background-image {
     object-position: center 55%;
+  }
+
+  [data-theme="1"] .background-image,
+  .theme-2 .background-image {
+    object-position: center center;
   }
 
   [data-theme="2"] .background-image,
@@ -275,10 +280,33 @@
   }
 }
 
+/* 移动端设备背景位置优化 - 水平位置调整 */
+@media (max-width: 480px) {
+  /* 主题1（失乐园）- 向左偏移7%显示更多左侧内容 */
+  [data-theme="0"] .background-image,
+  .theme-1 .background-image {
+    object-position: 43% 55%;
+  }
+
+  /* 主题2（鸟人）- 向左偏移30%显示更多左侧内容 */
+  [data-theme="1"] .background-image,
+  .theme-2 .background-image {
+    object-position: 20% center;
+  }
+
+  /* 主题3（Leo）- 向右偏移7%显示更多右侧内容 */
+  [data-theme="2"] .background-image,
+  .theme-3 .background-image {
+    object-position: 57% 54%;
+  }
+}
+
 /* 横屏模式下的背景位置优化 */
 @media (orientation: landscape) and (max-height: 500px) {
   [data-theme="0"] .background-image,
   .theme-1 .background-image,
+  [data-theme="1"] .background-image,
+  .theme-2 .background-image,
   [data-theme="2"] .background-image,
   .theme-3 .background-image {
     object-position: center 50%;

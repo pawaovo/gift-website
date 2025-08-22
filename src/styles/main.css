@@ -112,25 +112,70 @@ body {
 }
 
 .content-overlay {
-  position: relative;
-  z-index: 1;
-  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 2;
   padding: 2rem;
-  max-width: 90%;
+}
+
+.text-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  max-width: 50%;
+  margin-right: 5%;
 }
 
 .blessing-text {
-  font-size: clamp(2rem, 8vw, 4rem);
+  font-size: clamp(1.5rem, 6vw, 2.5rem);
   font-weight: 700;
   color: white;
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.5),
     0 4px 8px rgba(0, 0, 0, 0.3),
     0 8px 16px rgba(0, 0, 0, 0.2);
-  margin: 0;
+  margin: 0 0 2rem 0;
   line-height: 1.2;
   letter-spacing: 0.05em;
   animation: fadeInUp 1s ease-out;
+}
+
+.poem-container {
+  margin-top: 1rem;
+  transition: opacity 0.5s ease;
+}
+
+.poem-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.poem-line {
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.poem-line.poem-break {
+  height: 0.8rem;
+  opacity: 0;
 }
 
 /* ===== 音频播放器样式 ===== */
@@ -425,6 +470,24 @@ body {
 
   .content-overlay {
     padding: 1.5rem;
+    justify-content: center;
+  }
+
+  .text-content {
+    max-width: 70%;
+    margin-right: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .blessing-text {
+    font-size: clamp(1.2rem, 5vw, 2rem);
+    margin-bottom: 1.5rem;
+  }
+
+  .poem-line {
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    white-space: normal;
   }
 
 }
@@ -451,10 +514,43 @@ body {
 
   .content-overlay {
     padding: 1rem;
+    justify-content: flex-end;
+  }
+
+  .text-content {
+    max-width: 90%;
+    margin-right: 5%;
+    align-items: flex-end;
+    text-align: right;
   }
 
   .blessing-text {
-    font-size: clamp(1.5rem, 10vw, 3rem);
+    font-size: clamp(1.2rem, 8vw, 2.5rem);
+    margin-bottom: 1rem;
+  }
+
+  .poem-line {
+    font-size: clamp(0.8rem, 4vw, 1.1rem);
+    white-space: normal;
+    line-height: 1.5;
+  }
+
+  .poem-text {
+    gap: 0.3rem;
+  }
+
+  /* 主题3特殊布局 - 文字显示在顶部按钮区下方 */
+  [data-theme="2"] .content-overlay {
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 6rem;
+  }
+
+  [data-theme="2"] .text-content {
+    max-width: 80%;
+    margin-right: 0;
+    align-items: center;
+    text-align: center;
   }
 
   .footer {

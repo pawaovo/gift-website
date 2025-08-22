@@ -5,11 +5,13 @@
 
 import { ThemeSwitcher } from './theme-switcher.js';
 import { AudioPlayer } from './audio-player.js';
+import { VideoPlayer } from './video-player.js';
 
 class BirthdayApp {
   constructor() {
     this.themeSwitcher = null;
     this.audioPlayer = null;
+    this.videoPlayer = null;
     this.isInitialized = false;
 
     this.init();
@@ -42,6 +44,9 @@ class BirthdayApp {
       this.isInitialized = true;
       console.log('生日礼物网页初始化完成！');
 
+      // 启动视频播放
+      this.startIntroVideo();
+
     } catch (error) {
       console.error('应用初始化失败:', error);
     }
@@ -56,6 +61,9 @@ class BirthdayApp {
 
     // 初始化主题切换器，并传入音频播放器
     this.themeSwitcher = new ThemeSwitcher(this.audioPlayer);
+
+    // 初始化视频播放器
+    this.videoPlayer = new VideoPlayer();
 
     // 等待组件初始化完成
     await new Promise(resolve => setTimeout(resolve, 100));
@@ -88,6 +96,15 @@ class BirthdayApp {
     this.audioPlayer.on('onPause', (data) => {
       console.log('暂停播放:', data.track);
     });
+
+    // 视频播放器事件处理
+    this.videoPlayer.on('onVideoClose', () => {
+      this.handleVideoClose();
+    });
+
+    this.videoPlayer.on('onVideoEnd', () => {
+      this.handleVideoEnd();
+    });
   }
 
   /**
@@ -99,7 +116,7 @@ class BirthdayApp {
 
     try {
       // 更新页面标题
-      this.updatePageTitle(theme);
+      this.updatePageTitle();
 
       // 切换音频到新主题并自动播放
       if (this.audioPlayer && theme.music) {
@@ -148,6 +165,64 @@ class BirthdayApp {
 
     // 可以在这里显示用户友好的错误提示
     this.showErrorMessage('音频加载失败，请检查网络连接');
+  }
+
+  /**
+   * 处理视频关闭事件
+   */
+  async handleVideoClose() {
+    console.log('视频已关闭，切换到主题1');
+
+    try {
+      // 切换到主题1（失乐园）
+      await this.switchToTheme(0);
+
+      // 等待主题切换完成后自动播放音乐
+      setTimeout(async () => {
+        try {
+          await this.audioPlayer.play();
+          console.log('主题1音乐开始自动播放');
+        } catch (error) {
+          console.log('自动播放音乐失败:', error.message);
+        }
+      }, 500);
+
+    } catch (error) {
+      console.error('视频关闭后切换主题失败:', error);
+    }
+  }
+
+  /**
+   * 处理视频播放结束事件
+   */
+  async handleVideoEnd() {
+    console.log('视频播放结束');
+    // 视频结束后的处理逻辑与关闭相同
+    await this.handleVideoClose();
+  }
+
+  /**
+   * 启动介绍视频播放
+   */
+  async startIntroVideo() {
+    if (!this.videoPlayer) {
+      console.error('视频播放器未初始化');
+      return;
+    }
+
+    try {
+      // 延迟一点时间确保页面完全加载
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // 启动视频自动播放
+      await this.videoPlayer.autoPlayVideo();
+      console.log('介绍视频启动成功');
+
+    } catch (error) {
+      console.error('启动介绍视频失败:', error);
+      // 如果视频播放失败，直接切换到主题1
+      await this.handleVideoClose();
+    }
   }
 
   /**
@@ -469,15 +544,14 @@ class BirthdayApp {
     const currentTheme = this.themeSwitcher.getCurrentTheme();
 
     // 更新页面标题
-    this.updatePageTitle(currentTheme);
+    this.updatePageTitle();
   }
 
   /**
    * 更新页面标题
-   * @param {Object} theme - 主题对象
    */
-  updatePageTitle(theme) {
-    document.title = `${theme.title} - 生日快乐 🎂`;
+  updatePageTitle() {
+    document.title = 'LW 生日快乐 LW';
   }
 
   /**
