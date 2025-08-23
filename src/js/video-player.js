@@ -36,7 +36,7 @@ export class VideoPlayer {
       <div class="video-container">
         <video
           class="intro-video"
-          src="/hirono.mp4"
+          src="/videos/hirono.mp4"
           playsinline
           preload="auto"
         ></video>
